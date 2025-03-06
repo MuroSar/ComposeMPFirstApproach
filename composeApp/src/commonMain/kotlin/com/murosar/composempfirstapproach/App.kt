@@ -4,6 +4,7 @@ package com.murosar.composempfirstapproach
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -47,7 +48,8 @@ fun App(
     MaterialTheme {
         // Needed to be able to inject things
         KoinContext {
-            val viewModel = koinViewModel<MyViewModel>()
+            // DI
+            val myViewModel = koinViewModel<MyViewModel>()
 
             var showBasicContent by remember { mutableStateOf(false) }
             var showBatteryLevel by remember { mutableStateOf(false) }
@@ -61,13 +63,20 @@ fun App(
                     .padding(5.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Button(onClick = { showBasicContent = !showBasicContent }) {
+                Button(
+                    modifier = Modifier.fillMaxWidth(),
+                    onClick = { showBasicContent = !showBasicContent }
+                ) {
                     Text("Show basic content!")
                 }
                 AnimatedVisibility(showBasicContent) {
                     val greeting = remember { Greeting().greet() }
                     Column(
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .wrapContentHeight()
+                            .background(Color.LightGray)
+                            .padding(5.dp),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Text(
@@ -76,16 +85,27 @@ fun App(
                             color = Color.Red
                         )
                         Image(painterResource(Res.drawable.compose_multiplatform), null)
-                        Text("Compose: $greeting")
+                        Text(
+                            modifier = Modifier.padding(top = 5.dp),
+                            text = "Compose: $greeting",
+                            fontWeight = FontWeight.Bold
+                        )
                     }
                 }
-                Spacer(modifier = Modifier.height(20.dp))
-                Button(onClick = { showBatteryLevel = !showBatteryLevel }) {
+                Spacer(modifier = Modifier.height(10.dp))
+                Button(
+                    modifier = Modifier.fillMaxWidth(),
+                    onClick = { showBatteryLevel = !showBatteryLevel }
+                ) {
                     Text("Show battery level!")
                 }
                 AnimatedVisibility(showBatteryLevel) {
                     Column(
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .wrapContentHeight()
+                            .background(Color.LightGray)
+                            .padding(5.dp),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Text(
@@ -93,16 +113,27 @@ fun App(
                             textAlign = TextAlign.Center,
                             color = Color.Red
                         )
-                        Text("The battery level is: ${batteryManager.getBatteryLevel()}")
+                        Text(
+                            modifier = Modifier.padding(top = 5.dp),
+                            text = "The battery level is: ${batteryManager.getBatteryLevel()}",
+                            fontWeight = FontWeight.Bold
+                        )
                     }
                 }
-                Spacer(modifier = Modifier.height(20.dp))
-                Button(onClick = { showResources = !showResources }) {
+                Spacer(modifier = Modifier.height(10.dp))
+                Button(
+                    modifier = Modifier.fillMaxWidth(),
+                    onClick = { showResources = !showResources }
+                ) {
                     Text("Show resources!")
                 }
                 AnimatedVisibility(showResources) {
                     Column(
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .wrapContentHeight()
+                            .background(Color.LightGray)
+                            .padding(5.dp),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Image(painterResource(Res.drawable.baseline_add_reaction_24), null)
@@ -118,13 +149,20 @@ fun App(
                         )
                     }
                 }
-                Spacer(modifier = Modifier.height(20.dp))
-                Button(onClick = { showKoinInjection = !showKoinInjection }) {
+                Spacer(modifier = Modifier.height(10.dp))
+                Button(
+                    modifier = Modifier.fillMaxWidth(),
+                    onClick = { showKoinInjection = !showKoinInjection }
+                ) {
                     Text("Show Koin injection!")
                 }
                 AnimatedVisibility(showKoinInjection) {
                     Column(
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .wrapContentHeight()
+                            .background(Color.LightGray)
+                            .padding(5.dp),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Text(
@@ -134,7 +172,7 @@ fun App(
                         )
                         Text(
                             modifier = Modifier.padding(top = 5.dp),
-                            text = viewModel.helloWorld(),
+                            text = myViewModel.helloWorld(),
                             fontWeight = FontWeight.Bold
                         )
                     }
